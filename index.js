@@ -1,4 +1,4 @@
-module.exports = function (inheritlib, dummyFunc, isFunction, _EventEmitter, extend, Destroyable) {
+module.exports = function (inheritlib, dummyFunc, _EventEmitter, extend, Destroyable, jsonschema, readPropertyFromDotDelimitedString, isFunction, isArray) {
   'use strict';
   var Gettable = require('./Gettable.js')(inheritlib.inheritMethods, dummyFunc),
     Settable = require('./Settable')(inheritlib.inheritMethods, dummyFunc, Gettable),
@@ -12,7 +12,7 @@ module.exports = function (inheritlib, dummyFunc, isFunction, _EventEmitter, ext
     Settable:Settable,
     ChangeableListenable: ChangeableListenable,
     CLDestroyable: require('./CLDestroyable.js')(inheritlib, ChangeableListenable, Destroyable, Gettable, Changeable),
-    Configurable: require('./Configurable.js')(inheritlib.inheritMethods, extend),
+    Configurable: require('./Configurable.js')(inheritlib.inheritMethods, extend, jsonschema, readPropertyFromDotDelimitedString, isArray),
     CBMapable : require('./CBMapable.js')(inheritlib.inheritMethods, isFunction)
   };
 };

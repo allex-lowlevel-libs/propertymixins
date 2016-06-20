@@ -1,4 +1,4 @@
-module.exports = function (inheritMethods, extend) {
+module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromDotDelimitedString, isArray) {
   'use strict';
 
 
@@ -6,12 +6,19 @@ module.exports = function (inheritMethods, extend) {
     if (!config || !(f in config)) throw new Error('Missing mandatory field: '+f);
   }
 
+  function checkFieldsSchema (config, fs) {
+    if (!fs) return; //nothing to be done ...
+    if (isArray(fs)) {
+      fs.forEach(check.bind(null, config));
+      return;
+    }
+    var validate = require('jsonschema').validate,
+      result = validate(config, fs, {throwError: true});
+  }
 
   function Configurable (config) {
     this.config = extend({}, this.DEFAULT_CONFIG(),config);
-    var mandatory_fields = this.MANDATORY_CONFIG_FIELDS();
-    if (!mandatory_fields) return;
-    mandatory_fields.forEach(check.bind(null, config));
+    checkFieldsSchema(config, this.CONFIG_SCHEMA());
   }
   
   Configurable.prototype.__cleanUp = function () {
@@ -19,7 +26,11 @@ module.exports = function (inheritMethods, extend) {
   };
 
   Configurable.prototype.getConfigVal = function (name) {
-    return this.config ? this.config[name] : null;
+    try {
+      return readPropertyFromDotDelimitedString(this.config, name);
+    }catch (e) {
+      return null;
+    }
   };
 
   Configurable.prototype.configToString = function () {
@@ -30,10 +41,13 @@ module.exports = function (inheritMethods, extend) {
     throw new Error('DEFAULT_CONFIG not implemented');
   };
 
-  Configurable.prototype.MANDATORY_CONFIG_FIELDS = function () {return null;}
+  Configurable.prototype.CONFIG_SCHEMA = function () {
+    //provide MANDATORY_CONFIG_FIELDS for mandatory fields list ... for more complex config validation override CONFIG_SCHEMA
+    return this.MANDATORY_CONFIG_FIELDS ? this.MANDATORY_CONFIG_FIELDS() : null;
+  };
 
   Configurable.addMethods = function (chld) {
-    inheritMethods(chld, Configurable, 'getConfigVal', 'configToString', 'DEFAULT_CONFIG', 'MANDATORY_CONFIG_FIELDS');
+    inheritMethods(chld, Configurable, 'getConfigVal', 'configToString', 'DEFAULT_CONFIG', 'CONFIG_SCHEMA');
   };
 
   return Configurable;

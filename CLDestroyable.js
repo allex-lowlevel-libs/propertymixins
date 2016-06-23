@@ -9,7 +9,7 @@ module.exports = function (inheritlib, ChangeableListenable, Destroyable, Gettab
   inheritlib.inheritMethods(CLDestroyable, Changeable, 'set', 'fireEvent');
 
   CLDestroyable.prototype.__cleanUp = function () {
-    ChangeableListenable.prototype.__cleanUp.call(this);
+    ChangeableListenable.prototype.destroy.call(this);
     Destroyable.prototype.__cleanUp.call(this);
   };
   return CLDestroyable;

@@ -6,9 +6,10 @@ module.exports = function (inherit, Gettable, Changeable, Listenable) {
     Listenable.call(this);
   }
   inherit(ChangeableListenable, Changeable);
+  ChangeableListenable.prototype.destroy = 
   ChangeableListenable.prototype.__cleanUp = function () {
-    Changeable.prototype.__cleanUp.call(this);
-    Listenable.prototype.__cleanUp.call(this);
+    Changeable.prototype.destroy.call(this);
+    Listenable.prototype.destroy.call(this);
   };
 
   ChangeableListenable.prototype.attachListener = function (cborpropname, cb) {

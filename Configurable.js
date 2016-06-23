@@ -21,6 +21,7 @@ module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromD
     checkFieldsSchema(config, this.CONFIG_SCHEMA());
   }
   
+  Configurable.prototype.destroy = 
   Configurable.prototype.__cleanUp = function () {
     this.config = null;
   };

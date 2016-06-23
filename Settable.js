@@ -3,6 +3,7 @@ module.exports = function (inheritMethods, dummyFunc, Gettable) {
 
   function Settable(){
   }
+  Settable.prototype.destroy = 
   Settable.prototype.__cleanUp = dummyFunc;
   Settable.prototype.set = function(name,val){
     return Settable.set(name, val, this);

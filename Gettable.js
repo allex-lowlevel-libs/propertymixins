@@ -2,6 +2,7 @@ module.exports = function (inheritMethods, dummyFunc) {
   'use strict';
   function Gettable(){
   }
+  Gettable.prototype.destroy = 
   Gettable.prototype.__cleanUp = dummyFunc;
   Gettable.prototype.get = function(name){
     var methodname = 'get_'+name;

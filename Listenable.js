@@ -25,6 +25,7 @@ module.exports = function (inheritMethods, dummyFunc, isFunction, _EventEmitter)
       return evnt.attach(cborpropname);
     }
   };
+  Listenable.prototype.destroy =
   Listenable.prototype.__cleanUp = dummyFunc;
 
   Listenable.addMethods = function (chld) {

@@ -5,6 +5,7 @@ module.exports = function (inheritMethods, isFunction) {
     this._cbmap = cbmap;
   }
 
+  CBMapable.prototype.destroy = 
   CBMapable.prototype.__cleanUp = function () {
     this._cbmap = null;
   };

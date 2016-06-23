@@ -4,6 +4,7 @@ module.exports = function (inheritMethods, _EventEmitter, Gettable, Settable) {
   function Changeable(){
     this.changed = new _EventEmitter();
   }
+  Changeable.prototype.destroy = 
   Changeable.prototype.__cleanUp = function(){
     this.changed.destruct();
     this.changed = null;

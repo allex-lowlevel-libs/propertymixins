@@ -13,7 +13,9 @@ module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromD
       return;
     }
     var validate = require('jsonschema').validate,
-      result = validate(config, fs, {throwError: true});
+      result = validate(config, fs, {throwError: false});
+
+    if (result.errors.length) throw new Error(result.errors.join('; '));
   }
 
   function Configurable (config) {

@@ -1,4 +1,4 @@
-module.exports = function (inheritMethods, _EventEmitter, Gettable, Settable) {
+module.exports = function (inheritMethods, isFunction, _EventEmitter, Gettable, Settable) {
   'use strict';
 
   function Changeable(){
@@ -9,9 +9,17 @@ module.exports = function (inheritMethods, _EventEmitter, Gettable, Settable) {
     this.changed.destruct();
     this.changed = null;
   };
+  function fire_er(chng, name) {
+    chng.fireEvent(name, Gettable.prototype.get.call(chng, name));
+  }
   Changeable.prototype.set = function(name,val){
-    if(Settable.prototype.set.call(this,name,val)){
-      this.fireEvent(name, Gettable.prototype.get.call(this, name));
+    var setresult = Settable.prototype.set.call(this,name,val);
+    if(setresult){
+      if (isFunction(setresult.done)) {
+        setresult.done(fire_er.bind(null, this, name));
+      } else {
+        this.fireEvent(name, Gettable.prototype.get.call(this, name));
+      }
       return true;
     }
     return false;

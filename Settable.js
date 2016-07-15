@@ -1,4 +1,4 @@
-module.exports = function (inheritMethods, dummyFunc, Gettable) {
+module.exports = function (inheritMethods, dummyFunc, isFunction, Gettable) {
   'use strict';
 
   function Settable(){
@@ -15,8 +15,11 @@ module.exports = function (inheritMethods, dummyFunc, Gettable) {
     if(origval===val){return false;}
     methodname = 'set_'+name;
     var changed = false;
-    if('function' === typeof obj[methodname]){
-      changed = (obj[methodname].call(obj,val)!==false);
+    if(isFunction(obj[methodname])){
+      changed = obj[methodname].call(obj,val);
+      if (!isFunction(changed.done)) {
+        changed = (changed!==false);
+      }
     }else{
       if (!(name in obj)) {
         console.warn ('EVO PROBLEMA',name, obj);

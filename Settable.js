@@ -13,23 +13,22 @@ module.exports = function (inheritMethods, dummyFunc, isFunction, Gettable) {
   Settable.set = function (name, val, obj) {
     var origval = Gettable.get(obj,name),methodname = 'get_'+name;
     if(origval===val){return false;}
+
     methodname = 'set_'+name;
     var changed = false;
     if(isFunction(obj[methodname])){
       changed = obj[methodname].call(obj,val);
-      if (!isFunction(changed.done)) {
-        changed = (changed!==false);
-      }
-    }else{
-      if (!(name in obj)) {
-        console.warn ('EVO PROBLEMA',name, obj);
-        console.trace();
-        throw 'Name '+name+' in obj '+obj;
-      }
-      changed = true;
-      obj[name] = val;
+      if (changed && isFunction(changed.done)) return changed;
+      return changed!==false;
     }
-    return changed;
+
+    if (!(name in obj)) {
+      console.warn ('EVO PROBLEMA',name, obj);
+      console.trace();
+      throw 'Name '+name+' in obj '+obj;
+    }
+    obj[name] = val;
+    return true;
 
   };
 

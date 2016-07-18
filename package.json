@@ -1,6 +1,6 @@
 {
   "name": "allex_propertymixinslowlevellib",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "JavaScript mixins for property handling",
   "main": "index.js",
   "scripts": {

@@ -1,4 +1,4 @@
-module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromDotDelimitedString, isArray) {
+module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromDotDelimitedString, writePropertyFromDelimitedString, isArray) {
   'use strict';
 
 
@@ -36,6 +36,14 @@ module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromD
     }
   };
 
+  Configurable.prototype.setConfigVal = function (name, val, create) {
+    try {
+      return writePropertyFromDelimitedString (this.config, name, val, create);
+    }catch (e) {
+      return null;
+    }
+  };
+
   Configurable.prototype.configToString = function () {
     return JSON.stringify (this.config, null, 2);
   };
@@ -50,7 +58,7 @@ module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromD
   };
 
   Configurable.addMethods = function (chld) {
-    inheritMethods(chld, Configurable, 'getConfigVal', 'configToString', 'DEFAULT_CONFIG', 'CONFIG_SCHEMA');
+    inheritMethods(chld, Configurable, 'getConfigVal', 'setConfigVal', 'configToString', 'DEFAULT_CONFIG', 'CONFIG_SCHEMA');
   };
 
   return Configurable;

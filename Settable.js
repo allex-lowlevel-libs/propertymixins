@@ -23,9 +23,8 @@ module.exports = function (inheritMethods, dummyFunc, isFunction, Gettable) {
     }
 
     if (!(name in obj)) {
-      console.warn ('EVO PROBLEMA',name, obj);
-      console.trace();
-      throw 'Name '+name+' in obj '+obj;
+      //console.warn ('Settable problem: "'+name+'" cannot be set on', obj, 'with value', val);
+      throw new Error('"'+name+'" cannot be set');
     }
     obj[name] = val;
     return true;

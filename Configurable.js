@@ -12,7 +12,7 @@ module.exports = function (inheritMethods, extend, jsonschema, readPropertyFromD
       fs.forEach(check.bind(null, config));
       return;
     }
-    var validate = require('jsonschema').validate,
+    var validate = jsonschema.validate,
       result = validate(config, fs, {throwError: false});
 
     if (result.errors.length) throw new Error(result.errors.join('; '));
